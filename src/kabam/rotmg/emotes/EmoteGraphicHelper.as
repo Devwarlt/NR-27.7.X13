@@ -117,11 +117,9 @@ class Drawer extends Sprite {
         }
     }
 
-    private function draw() : void
-    {
+    private function draw():void {
         var _local1:DisplayObject = null;
-        for each(_local1 in this.list)
-        {
+        for each (_local1 in this.list) {
             addChild(_local1);
         }
     }
