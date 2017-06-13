@@ -2,6 +2,7 @@
 import com.company.assembleegameclient.parameters.Parameters;
 import com.company.assembleegameclient.util.FameUtil;
 import com.company.assembleegameclient.util.StageProxy;
+import com.company.ui.BaseSimpleText;
 
 import flash.display.Bitmap;
 import flash.display.BitmapData;
@@ -10,9 +11,11 @@ import flash.display.StageQuality;
 import flash.geom.Matrix;
 import flash.text.TextField;
 import flash.text.TextFormat;
+import flash.utils.escapeMultiByte;
 
 import kabam.rotmg.chat.model.ChatMessage;
 import kabam.rotmg.chat.model.ChatModel;
+import kabam.rotmg.emotes.Emotes;
 import kabam.rotmg.text.model.FontModel;
 import kabam.rotmg.text.view.BitmapTextFactory;
 import kabam.rotmg.text.view.stringBuilder.StaticStringBuilder;
@@ -190,10 +193,41 @@ public class ChatListItemFactory {
         }
     }
 
-    private function makeMessageLine(_arg1:String):void {
-        var _local2:StringBuilder = new StaticStringBuilder(_arg1);
-        var _local3:BitmapData = this.getBitmapData(_local2, this.getTextColor());
-        this.buffer.push(new Bitmap(_local3));
+    private function containsEmotes(text:String):Boolean {
+        var emoteText:String = null;
+        var splitText:Array = text.split(" ");
+        for each (emoteText in splitText) {
+            if (Emotes.hasEmote(emoteText)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private function getAllWords(text:String):Array {
+        return text.split(" ");
+    }
+
+    private function makeMessageLine(text:String):void {
+        var SBuilder:StringBuilder = null;
+        var BitmapData_:BitmapData = null;
+        var emoteText:String = null;
+        if (this.containsEmotes(text)) {
+            for each (emoteText in this.getAllWords(text)) {
+                if (Emotes.hasEmote(emoteText)) {
+                    this.buffer.push(Emotes.getEmote(emoteText));
+                }
+                else {
+                    SBuilder = new StaticStringBuilder(emoteText);
+                    BitmapData_ = this.getBitmapData(SBuilder, this.getTextColor());
+                    this.buffer.push(new Bitmap(BitmapData_));
+                }
+            }
+            return;
+        }
+        SBuilder = new StaticStringBuilder(text);
+        BitmapData_ = this.getBitmapData(SBuilder, this.getTextColor());
+        this.buffer.push(new Bitmap(BitmapData_));
     }
 
     private function getNameColor():uint {
