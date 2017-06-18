@@ -13,17 +13,17 @@ public class Emote extends Sprite {
     private var scale:Number;
     private var hq:Boolean;
 
-    public function Emote(_arg1:String, _arg2:BitmapData, _arg3:Number, _arg4:Boolean) {
+    public function Emote(emoteName:String, bitmapData:BitmapData, scale:Number, hq:Boolean) {
         super();
-        this.emoteName = _arg1;
-        this.bitmapData = _arg2;
-        this.scale = _arg3;
-        this.hq = _arg4;
-        var BM:BitmapData = _arg2;
+        this.emoteName = emoteName;
+        this.bitmapData = bitmapData;
+        this.scale = scale;
+        this.hq = hq;
+        var BM:BitmapData = bitmapData;
         var matrix:Matrix = new Matrix();
-        matrix.scale(_arg3, _arg3);
-        var Image:BitmapData = new BitmapData(Math.floor(BM.width * _arg3), Math.floor(BM.height * _arg3), true, 0);
-        Image.draw(BM, matrix, null, null, null, _arg4);
+        matrix.scale(scale, scale);
+        var Image:BitmapData = new BitmapData(Math.floor(BM.width * scale), Math.floor(BM.height * scale), true, 0);
+        Image.draw(BM, matrix, null, null, null, hq);
         var shape:Shape = new Shape();
         shape.graphics.beginBitmapFill(BM, matrix, false, true);
         shape.graphics.lineStyle(0,0,0);
@@ -31,7 +31,7 @@ public class Emote extends Sprite {
         shape.graphics.endFill();
         Image.draw(shape);
         var Image_:Bitmap = new Bitmap(Image);
-        Image_.filters = !!_arg4?[]:[new GlowFilter(0,1,6,6,4)];
+        Image_.filters = !!hq?[]:[new GlowFilter(0,1,6,6,4)];
         Image_.y = -2;
         addChild(Image_);
     }

@@ -194,10 +194,9 @@ public class ChatListItemFactory {
     }
 
     private function containsEmotes(text:String):Boolean {
-        var emoteText:String = null;
         var splitText:Array = text.split(" ");
-        for each (emoteText in splitText) {
-            if (Emotes.hasEmote(emoteText)) {
+        for each (var word:String in splitText) {
+            if (Emotes.hasEmote(word)) {
                 return true;
             }
         }
@@ -209,16 +208,15 @@ public class ChatListItemFactory {
     }
 
     private function makeMessageLine(text:String):void {
-        var SBuilder:StringBuilder = null;
-        var BitmapData_:BitmapData = null;
-        var emoteText:String = null;
+        var SBuilder:StringBuilder;
+        var BitmapData_:BitmapData;
         if (this.containsEmotes(text)) {
-            for each (emoteText in this.getAllWords(text)) {
-                if (Emotes.hasEmote(emoteText)) {
-                    this.buffer.push(Emotes.getEmote(emoteText));
+            for each (var word:String in this.getAllWords(text)) {
+                if (Emotes.hasEmote(word)) {
+                    this.buffer.push(Emotes.getEmote(word));
                 }
                 else {
-                    SBuilder = new StaticStringBuilder(emoteText);
+                    SBuilder = new StaticStringBuilder(word);
                     BitmapData_ = this.getBitmapData(SBuilder, this.getTextColor());
                     this.buffer.push(new Bitmap(BitmapData_));
                 }

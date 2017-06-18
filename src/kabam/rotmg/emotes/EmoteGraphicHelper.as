@@ -22,30 +22,30 @@ public class EmoteGraphicHelper {
         return tfield;
     }
 
-    public function getChatBubbleText(_arg1:String, _arg2:Boolean, _arg3:uint):Sprite {
-        this.add(_arg1, _arg2, _arg3);
+    public function getChatBubbleText(text:String, bold:Boolean, color:uint):Sprite {
+        this.add(text, bold, color);
         return new Drawer(this.buffer,150,17);
     }
 
-    private function getAllWords(_arg1:String):Array {
-        return _arg1.split(" ");
+    private function getAllWords(text:String):Array {
+        return text.split(" ");
     }
 
-    private function add(_arg1:String, _arg2:Boolean, _arg3:uint):void {
+    private function add(text:String, bold:Boolean, color:uint):void {
         var sbuilder:StringBuilder = null;
         var string:String = null;
-        for each (string in this.getAllWords(_arg1)) {
+        for each (string in this.getAllWords(text)) {
             if (Emotes.hasEmote(string)) {
                 this.buffer.push(Emotes.getEmote(string));
             }
             else {
                 sbuilder = new StaticStringBuilder(string);
-                this.buffer.push(this.makeNormalText(sbuilder, _arg2, _arg3));
+                this.buffer.push(this.makeNormalText(sbuilder, bold, color));
             }
         }
     }
 
-    private function makeNormalText(_arg1:StringBuilder, _arg2:Boolean, _arg3:uint):TextField {
+    private function makeNormalText(SBuilder:StringBuilder, bold:Boolean, color:uint):TextField {
         var tfield:TextField = null;
         tfield = new TextField();
         tfield.autoSize = TextFieldAutoSize.LEFT;
@@ -53,12 +53,12 @@ public class EmoteGraphicHelper {
         var _local5_:TextFormat = new TextFormat();
         _local5_.font = "Myriad Pr";
         _local5_.size = 14;
-        _local5_.bold = _arg2;
-        _local5_.color = _arg3;
+        _local5_.bold = bold;
+        _local5_.color = color;
         tfield.defaultTextFormat = _local5_;
         tfield.selectable = false;
         tfield.mouseEnabled = false;
-        tfield.text = _arg1.getString();
+        tfield.text = SBuilder.getString();
         if (tfield.textWidth > 150) {
             tfield.multiline = true;
             tfield.wordWrap = true;
@@ -81,12 +81,12 @@ class Drawer extends Sprite {
     private var count:uint;
     private var lineHeight:uint;
 
-    function Drawer(_arg1:Vector.<DisplayObject>, _arg2:int, _arg3:int) {
+    function Drawer(buffer:Vector.<DisplayObject>, maxWidth:int, lineHeight:int) {
         super();
-        this.maxWidth = _arg2;
-        this.lineHeight = _arg3;
-        this.list = _arg1;
-        this.count = _arg1.length;
+        this.maxWidth = maxWidth;
+        this.lineHeight = lineHeight;
+        this.list = buffer;
+        this.count = buffer.length;
         this._0H_q();
         this.draw();
     }
@@ -118,9 +118,9 @@ class Drawer extends Sprite {
     }
 
     private function draw():void {
-        var _local1:DisplayObject = null;
-        for each (_local1 in this.list) {
-            addChild(_local1);
+        var do_:DisplayObject = null;
+        for each (do_ in this.list) {
+            addChild(do_);
         }
     }
 }

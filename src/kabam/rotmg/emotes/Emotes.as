@@ -910,16 +910,16 @@ public class Emotes {
         addEmote(":zzz:", AssetLibrary.getImageFromSet("emotes", 878));
     }
 
-    public static function addEmote(_arg1:String, _arg2:BitmapData, _arg3:Number = 1, _arg4:Boolean = true):void {
-        emotes[_arg1] = new Emote(_arg1, _arg2, _arg3, _arg4);
+    public static function addEmote(name:String, bitmapData:BitmapData, scale:Number = 1, hq:Boolean = true):void {
+        emotes[name] = new Emote(name, bitmapData, scale, hq);
     }
 
-    public static function hasEmote(_arg1:String):Boolean {
-        return emotes[_arg1] != undefined;
+    public static function hasEmote(name:String):Boolean {
+        return emotes[name] != undefined;
     }
 
-    public static function getEmote(_arg1:String):Emote {
-        return (emotes[_arg1] as Emote).clone();
+    public static function getEmote(name:String):Emote {
+        return (emotes[name] as Emote).clone();
     }
 }
 }
