@@ -12,7 +12,6 @@ import com.company.assembleegameclient.ui.GuildText;
 import com.company.assembleegameclient.ui.RankText;
 import com.company.assembleegameclient.ui.menu.PlayerMenu;
 import com.company.assembleegameclient.util.TextureRedrawer;
-import com.company.googleanalytics.GA;
 import com.company.util.CachingColorTransformer;
 import com.company.util.MoreColorUtil;
 import com.company.util.MoreObjectUtil;
@@ -99,8 +98,6 @@ public class GameSprite extends AGameSprite {
     public var addToQueueSignal:AddPopupToStartupQueueSignal;
     public var flushQueueSignal:FlushPopupStartupQueueSignal;
     private var focus:GameObject;
-    private var frameTimeSum_:int = 0;
-    private var frameTimeCount_:int = 0;
     private var isGameStarted:Boolean;
     private var displaysPosY:uint = 4;
     private var currentPackage:DisplayObject;
@@ -464,14 +461,6 @@ public class GameSprite extends AGameSprite {
             return;
         }
         LoopedProcess.runProcesses(_local2);
-        this.frameTimeSum_ = (this.frameTimeSum_ + _local3);
-        this.frameTimeCount_ = (this.frameTimeCount_ + 1);
-        if (this.frameTimeSum_ > 300000) {
-            _local7 = int(Math.round(((1000 * this.frameTimeCount_) / this.frameTimeSum_)));
-            GA.global().trackEvent("performance", "frameRate", map.name_, _local7);
-            this.frameTimeCount_ = 0;
-            this.frameTimeSum_ = 0;
-        }
         var _local4:int = getTimer();
         map.update(_local2, _local3);
         this.monitor.dispatch("Map.update", (getTimer() - _local4));
@@ -490,7 +479,6 @@ public class GameSprite extends AGameSprite {
                 this.guildText_.x = this.rankText_.width + 16;
             }
             if (_local5.isPaused()) {
-                map.filters = [PAUSED_FILTER];
                 hudView.filters = [PAUSED_FILTER];
                 map.mouseEnabled = false;
                 map.mouseChildren = false;
@@ -498,8 +486,7 @@ public class GameSprite extends AGameSprite {
                 hudView.mouseChildren = false;
             }
             else {
-                if (map.filters.length > 0) {
-                    map.filters = [];
+                if (hudView.filters.length > 0) {
                     hudView.filters = [];
                     map.mouseEnabled = true;
                     map.mouseChildren = true;
