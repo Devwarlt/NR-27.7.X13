@@ -11,6 +11,9 @@ import flash.utils.Dictionary;
 
 public class Parameters {
 
+    public static const IS_TESTING:Boolean = true;
+    public static const GAME_DNS:String = IS_TESTING ? "localhost" : "testing.loesoft.org";
+    public static const GAME_PORT:String = IS_TESTING ? "3000" : "5555";
     public static const BUILD_VERSION:String = "27.7";
     public static const MINOR_VERSION:String = "X13";
     public static const FULL_BUILD:String = BUILD_VERSION + "." + MINOR_VERSION;

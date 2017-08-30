@@ -5,7 +5,7 @@ import kabam.rotmg.application.api.ApplicationSetup;
 
 public class LocalhostSetup implements ApplicationSetup {
 
-    private const SERVER:String = "http://localhost:8080";
+    private const SERVER:String = "http://" + Parameters.GAME_DNS + ":" + Parameters.GAME_PORT;
     private const BUILD_LABEL:String = "<font color='#FFEE00'>LOCALHOST</font> #{VERSION}";
 
 
